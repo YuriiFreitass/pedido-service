@@ -1,9 +1,14 @@
 package com.yuri.pedido_service.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "pedidos")
 public class PedidoEntity {
