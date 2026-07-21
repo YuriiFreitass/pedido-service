@@ -40,9 +40,9 @@ public class PedidoController {
 	public PedidoResponseDto update(@PathVariable Long id, @Valid @RequestBody PedidoRequestDto pedidoRequestDto) {
 		return pedidoService.update(id, pedidoRequestDto);
 	}
-	@DeleteMapping
+	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteByNumeroPedido(@PathVariable PedidoRequestDto pedidoRequestDto) {
-		pedidoService.deleteByNumeroPedido(pedidoRequestDto);
+	public void delete(@PathVariable Long id) {
+		pedidoService.deleteById(id);
 	}
 }

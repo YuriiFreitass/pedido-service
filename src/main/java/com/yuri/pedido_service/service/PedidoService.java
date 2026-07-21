@@ -1,6 +1,6 @@
 package com.yuri.pedido_service.service;
 
-import com.yuri.pedido_service.PedidoServiceApplication;
+
 import com.yuri.pedido_service.dto.PedidoRequestDto;
 import com.yuri.pedido_service.dto.PedidoResponseDto;
 import com.yuri.pedido_service.entity.PedidoEntity;
@@ -11,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +32,10 @@ public class PedidoService {
 	}
 
 	public PedidoResponseDto save(PedidoRequestDto pedidoRequestDto) {
-		if (pedidoRepository.existsByNumeroPedido(pedidoRequestDto.numeroPedido())) {
-			throw  new PedidoNaoEncontradoException("Não foi possível encontrar o pedido.");
-		}
-		PedidoEntity pedidoSalvo = pedidoMapper.toEntity(pedidoRequestDto);
+
+		PedidoEntity pedido = pedidoMapper.toEntity(pedidoRequestDto);
+
+		PedidoEntity pedidoSalvo = pedidoRepository.save(pedido);
 
 		return pedidoMapper.toResponseDto(pedidoSalvo);
 	}
@@ -53,9 +51,9 @@ public class PedidoService {
 		return pedidoMapper.toResponseDto(pedidoSalvo);
 	}
 
-	public void deleteByNumeroPedido(PedidoRequestDto pedidoRequestDto) {
-		PedidoEntity pedido = pedidoRepository.findByNumeroPedido(pedidoRequestDto.numeroPedido())
-				.orElseThrow(() -> new PedidoNaoEncontradoException("O pedido com número " + pedidoRequestDto.numeroPedido() + " não foi encontrado"));
+	public void deleteById(Long id) {
+		PedidoEntity pedido = pedidoRepository.findById(id)
+				.orElseThrow(() -> new PedidoNaoEncontradoException("O pedido com ID" + id + " não foi encontrado"));
 		pedidoRepository.delete(pedido);
 	}
 

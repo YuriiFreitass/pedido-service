@@ -3,7 +3,6 @@ package com.yuri.pedido_service.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,7 +15,7 @@ public class PedidoEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(nullable = false)
+	@Column(unique = true)
 	private int numeroPedido;
 	@Column(nullable = false)
 	private String descricao;
