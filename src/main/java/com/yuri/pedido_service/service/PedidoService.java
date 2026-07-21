@@ -1,0 +1,64 @@
+package com.yuri.pedido_service.service;
+
+import com.yuri.pedido_service.PedidoServiceApplication;
+import com.yuri.pedido_service.dto.PedidoRequestDto;
+import com.yuri.pedido_service.dto.PedidoResponseDto;
+import com.yuri.pedido_service.entity.PedidoEntity;
+import com.yuri.pedido_service.exception.PedidoNaoEncontradoException;
+import com.yuri.pedido_service.mapper.PedidoMapper;
+import com.yuri.pedido_service.repository.PedidoRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class PedidoService {
+
+	private final PedidoRepository pedidoRepository;
+	private final PedidoMapper pedidoMapper;
+
+	public Page<PedidoResponseDto> findAll(Pageable pageable) {
+		return pedidoRepository.findAll(pageable).map(pedidoMapper::toResponseDto);
+	}
+
+	public PedidoResponseDto findById(Long id) {
+		PedidoEntity pedido = pedidoRepository.findById(id)
+				.orElseThrow(() -> new PedidoNaoEncontradoException("Pedido não encontrado"));
+		return pedidoMapper.toResponseDto(pedido);
+
+	}
+
+	public PedidoResponseDto save(PedidoRequestDto pedidoRequestDto) {
+		if (pedidoRepository.existsByNumeroPedido(pedidoRequestDto.numeroPedido())) {
+			throw  new PedidoNaoEncontradoException("Não foi possível encontrar o pedido.");
+		}
+		PedidoEntity pedidoSalvo = pedidoMapper.toEntity(pedidoRequestDto);
+
+		return pedidoMapper.toResponseDto(pedidoSalvo);
+	}
+
+	public PedidoResponseDto update(Long id, PedidoRequestDto pedidoRequestDto) {
+		PedidoEntity pedido = pedidoRepository.findById(id)
+				.orElseThrow(() -> new PedidoNaoEncontradoException("O pedido não foi encontrado"));
+
+		pedidoMapper.updateEntityFromDto(pedidoRequestDto, pedido);
+
+		PedidoEntity pedidoSalvo = pedidoRepository.save(pedido);
+
+		return pedidoMapper.toResponseDto(pedidoSalvo);
+	}
+
+	public void deleteByNumeroPedido(PedidoRequestDto pedidoRequestDto) {
+		PedidoEntity pedido = pedidoRepository.findByNumeroPedido(pedidoRequestDto.numeroPedido())
+				.orElseThrow(() -> new PedidoNaoEncontradoException("O pedido com número " + pedidoRequestDto.numeroPedido() + " não foi encontrado"));
+		pedidoRepository.delete(pedido);
+	}
+
+
+
+}
