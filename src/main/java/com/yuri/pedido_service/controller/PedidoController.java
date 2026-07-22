@@ -1,5 +1,7 @@
 package com.yuri.pedido_service.controller;
 
+import com.yuri.pedido_service.client.ClienteClient;
+import com.yuri.pedido_service.client.ClienteResponseDto;
 import com.yuri.pedido_service.dto.PedidoRequestDto;
 import com.yuri.pedido_service.dto.PedidoResponseDto;
 import com.yuri.pedido_service.service.PedidoService;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class PedidoController {
 
 	private final PedidoService pedidoService;
+
+	private final ClienteClient clienteClient;
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -44,5 +48,10 @@ public class PedidoController {
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 		pedidoService.deleteById(id);
+	}
+
+	@GetMapping("/teste/{id}")
+	public ClienteResponseDto teste(@PathVariable Long id) {
+		return clienteClient.findById(id);
 	}
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record PedidoRequestDto(
+		@NotNull Long clienteId,
 		@NotBlank String descricao,
-		@NotNull @Positive double valorTotal
+		@Positive double valorTotal
 ) {}
