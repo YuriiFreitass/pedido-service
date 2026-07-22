@@ -5,6 +5,9 @@ import com.yuri.pedido_service.client.ClienteResponseDto;
 import com.yuri.pedido_service.dto.PedidoRequestDto;
 import com.yuri.pedido_service.dto.PedidoResponseDto;
 import com.yuri.pedido_service.service.PedidoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Pedidos", description = "Endpoints para gerenciamento de pedidos")
 @RestController
 @RequestMapping("/v1/pedidos")
 @RequiredArgsConstructor
@@ -21,37 +25,44 @@ public class PedidoController {
 
 	private final ClienteClient clienteClient;
 
+	@Operation(summary = "Listar pedidos")
+	@ApiResponse(responseCode = "200", description = "Pedidos retornados com sucesso")
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
 	public Page<PedidoResponseDto> findAll(Pageable pageable) {
 		return pedidoService.findAll(pageable);
 	}
 
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public PedidoResponseDto save(@Valid @RequestBody PedidoRequestDto pedidoRequestDto) {
-		return pedidoService.save(pedidoRequestDto);
-	}
-
+	@Operation(summary = "Buscar pedidos por ID")
+	@ApiResponse(responseCode = "200", description = "Pedido encontrado")
+	@ApiResponse(responseCode = "404", description = "Pedido não encontrado")
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public PedidoResponseDto findById(@PathVariable Long id) {
 		return pedidoService.findById(id);
 	}
 
+	@Operation(summary = "Cadastrar pedidos")
+	@ApiResponse(responseCode = "201", description = "Pedido cadastrado com sucesso")
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public PedidoResponseDto save(@Valid @RequestBody PedidoRequestDto pedidoRequestDto) {
+		return pedidoService.save(pedidoRequestDto);
+	}
+
+	@Operation(summary = "Atualizar pedidos")
+	@ApiResponse(responseCode = "200", description = "Pedido atualizado com sucesso")
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public PedidoResponseDto update(@PathVariable Long id, @Valid @RequestBody PedidoRequestDto pedidoRequestDto) {
 		return pedidoService.update(id, pedidoRequestDto);
 	}
+
+	@Operation(summary = "Excluir pedidos")
+	@ApiResponse(responseCode = "204", description = "Pedido removido com sucesso")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 		pedidoService.deleteById(id);
-	}
-
-	@GetMapping("/teste/{id}")
-	public ClienteResponseDto teste(@PathVariable Long id) {
-		return clienteClient.findById(id);
 	}
 }
