@@ -38,8 +38,8 @@ public class PedidoController {
 	@ApiResponse(responseCode = "404", description = "Pedido não encontrado")
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public PedidoResponseDto findById(@PathVariable Long id) {
-		return pedidoService.findById(id);
+	public PedidoResponseDto findById(@PathVariable Long pedidoId) {
+		return pedidoService.findById(pedidoId);
 	}
 
 	@Operation(summary = "Cadastrar pedidos")
@@ -54,15 +54,15 @@ public class PedidoController {
 	@ApiResponse(responseCode = "200", description = "Pedido atualizado com sucesso")
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public PedidoResponseDto update(@PathVariable Long id, @Valid @RequestBody PedidoRequestDto pedidoRequestDto) {
-		return pedidoService.update(id, pedidoRequestDto);
+	public PedidoResponseDto update(@PathVariable Long pedidoId, @Valid @RequestBody PedidoRequestDto pedidoRequestDto) {
+		return pedidoService.update(pedidoId, pedidoRequestDto);
 	}
 
 	@Operation(summary = "Excluir pedidos")
 	@ApiResponse(responseCode = "204", description = "Pedido removido com sucesso")
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable Long id) {
-		pedidoService.deleteById(id);
+	public void delete(@PathVariable Long pedidoId) {
+		pedidoService.deleteById(pedidoId);
 	}
 }

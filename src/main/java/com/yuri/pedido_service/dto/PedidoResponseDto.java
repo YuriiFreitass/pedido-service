@@ -1,8 +1,7 @@
 package com.yuri.pedido_service.dto;
 
 public record PedidoResponseDto(
-		Long id,
-		int numeroPedido,
+		Long pedidoId,
 		String descricao,
 		double valorTotal
 ) {

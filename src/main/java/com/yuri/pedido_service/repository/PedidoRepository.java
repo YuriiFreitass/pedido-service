@@ -8,8 +8,5 @@ import java.util.Optional;
 public interface PedidoRepository extends JpaRepository<PedidoEntity, Long> {
 
 
-	Optional<PedidoEntity> findByNumeroPedido(int numeroPedido);
-
-	boolean existsByNumeroPedido(int numeroPedido);
 
 }

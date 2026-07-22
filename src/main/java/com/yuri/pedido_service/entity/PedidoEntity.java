@@ -17,18 +17,15 @@ public class PedidoEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(unique = true)
-	private int numeroPedido;
-
 	@Column(nullable = false)
 	private String descricao;
 
 	@Column(nullable = false)
 	private double valorTotal;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private StatusPedido statusPedido;
+//	@Enumerated(EnumType.STRING)
+//	@Column(nullable = false)
+//	private StatusPedido statusPedido;
 
 	@Column(name = "cliente_id", nullable = false)
 	private Long clienteId;

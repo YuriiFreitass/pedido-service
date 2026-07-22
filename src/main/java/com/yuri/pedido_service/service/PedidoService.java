@@ -24,8 +24,8 @@ public class PedidoService {
 		return pedidoRepository.findAll(pageable).map(pedidoMapper::toResponseDto);
 	}
 
-	public PedidoResponseDto findById(Long id) {
-		PedidoEntity pedido = pedidoRepository.findById(id)
+	public PedidoResponseDto findById(Long pedidoId) {
+		PedidoEntity pedido = pedidoRepository.findById(pedidoId)
 				.orElseThrow(() -> new PedidoNaoEncontradoException("Pedido não encontrado"));
 		return pedidoMapper.toResponseDto(pedido);
 
@@ -40,8 +40,8 @@ public class PedidoService {
 		return pedidoMapper.toResponseDto(pedidoSalvo);
 	}
 
-	public PedidoResponseDto update(Long id, PedidoRequestDto pedidoRequestDto) {
-		PedidoEntity pedido = pedidoRepository.findById(id)
+	public PedidoResponseDto update(Long pedidoId, PedidoRequestDto pedidoRequestDto) {
+		PedidoEntity pedido = pedidoRepository.findById(pedidoId)
 				.orElseThrow(() -> new PedidoNaoEncontradoException("O pedido não foi encontrado"));
 
 		pedidoMapper.updateEntityFromDto(pedidoRequestDto, pedido);
@@ -51,9 +51,9 @@ public class PedidoService {
 		return pedidoMapper.toResponseDto(pedidoSalvo);
 	}
 
-	public void deleteById(Long id) {
-		PedidoEntity pedido = pedidoRepository.findById(id)
-				.orElseThrow(() -> new PedidoNaoEncontradoException("O pedido com ID" + id + " não foi encontrado"));
+	public void deleteById(Long pedidoId) {
+		PedidoEntity pedido = pedidoRepository.findById(pedidoId)
+				.orElseThrow(() -> new PedidoNaoEncontradoException("O pedido com ID" + pedidoId + " não foi encontrado"));
 		pedidoRepository.delete(pedido);
 	}
 
