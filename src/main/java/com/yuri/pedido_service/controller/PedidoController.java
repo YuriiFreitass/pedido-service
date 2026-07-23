@@ -4,6 +4,7 @@ import com.yuri.pedido_service.client.ClienteClient;
 import com.yuri.pedido_service.client.ClienteResponseDto;
 import com.yuri.pedido_service.dto.PedidoRequestDto;
 import com.yuri.pedido_service.dto.PedidoResponseDto;
+import com.yuri.pedido_service.enums.StatusPedido;
 import com.yuri.pedido_service.service.PedidoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -36,7 +37,7 @@ public class PedidoController {
 	@Operation(summary = "Buscar pedidos por ID")
 	@ApiResponse(responseCode = "200", description = "Pedido encontrado")
 	@ApiResponse(responseCode = "404", description = "Pedido não encontrado")
-	@GetMapping("/{id}")
+	@GetMapping("/{pedidoId}")
 	@ResponseStatus(HttpStatus.OK)
 	public PedidoResponseDto findById(@PathVariable Long pedidoId) {
 		return pedidoService.findById(pedidoId);
@@ -52,15 +53,20 @@ public class PedidoController {
 
 	@Operation(summary = "Atualizar pedidos")
 	@ApiResponse(responseCode = "200", description = "Pedido atualizado com sucesso")
-	@PutMapping("/{id}")
+	@PutMapping("/{pedidoId}")
 	@ResponseStatus(HttpStatus.OK)
 	public PedidoResponseDto update(@PathVariable Long pedidoId, @Valid @RequestBody PedidoRequestDto pedidoRequestDto) {
 		return pedidoService.update(pedidoId, pedidoRequestDto);
 	}
 
+	@PatchMapping("/{pedidoId}/status")
+	public  PedidoResponseDto atualizarStatus(@PathVariable Long pedidoId, @RequestParam StatusPedido statusPedido) {
+		return pedidoService.atualizarStatus(pedidoId, statusPedido);
+	}
+
 	@Operation(summary = "Excluir pedidos")
 	@ApiResponse(responseCode = "204", description = "Pedido removido com sucesso")
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{pedidoId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long pedidoId) {
 		pedidoService.deleteById(pedidoId);

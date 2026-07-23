@@ -4,6 +4,7 @@ package com.yuri.pedido_service.service;
 import com.yuri.pedido_service.dto.PedidoRequestDto;
 import com.yuri.pedido_service.dto.PedidoResponseDto;
 import com.yuri.pedido_service.entity.PedidoEntity;
+import com.yuri.pedido_service.enums.StatusPedido;
 import com.yuri.pedido_service.exception.PedidoNaoEncontradoException;
 import com.yuri.pedido_service.mapper.PedidoMapper;
 import com.yuri.pedido_service.repository.PedidoRepository;
@@ -35,6 +36,8 @@ public class PedidoService {
 
 		PedidoEntity pedido = pedidoMapper.toEntity(pedidoRequestDto);
 
+		pedido.setStatusPedido(StatusPedido.AGUARDANDO_PAGAMENTO);
+
 		PedidoEntity pedidoSalvo = pedidoRepository.save(pedido);
 
 		return pedidoMapper.toResponseDto(pedidoSalvo);
@@ -57,6 +60,15 @@ public class PedidoService {
 		pedidoRepository.delete(pedido);
 	}
 
+	public PedidoResponseDto atualizarStatus(Long pedidoId, StatusPedido statusPedido) {
+		PedidoEntity pedido = pedidoRepository.findById(pedidoId).orElseThrow(() -> new PedidoNaoEncontradoException(("Pedido não encontrado")));
+
+		pedido.setStatusPedido(statusPedido);
+
+		PedidoEntity pedidoAtualizado = pedidoRepository.save(pedido);
+
+		return pedidoMapper.toResponseDto(pedidoAtualizado);
+	}
 
 
 }

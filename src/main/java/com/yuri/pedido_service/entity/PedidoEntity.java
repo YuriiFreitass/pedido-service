@@ -15,7 +15,7 @@ public class PedidoEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long pedidoId;
 
 	@Column(nullable = false)
 	private String descricao;
@@ -23,9 +23,9 @@ public class PedidoEntity {
 	@Column(nullable = false)
 	private double valorTotal;
 
-//	@Enumerated(EnumType.STRING)
-//	@Column(nullable = false)
-//	private StatusPedido statusPedido;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private StatusPedido statusPedido;
 
 	@Column(name = "cliente_id", nullable = false)
 	private Long clienteId;
