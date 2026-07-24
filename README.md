@@ -129,7 +129,7 @@ src
 ## 1. Clone o repositório
 
 ```bash
-git clone <https://github.com/YuriiFreitass/pedido-service>
+git clone https://github.com/YuriiFreitass/pedido-service
 ```
 
 ---
